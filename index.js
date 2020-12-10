@@ -1,61 +1,117 @@
 const express = require('express'),
- morgan = require('morgan');
+ morgan = require('morgan'),
+ bodyParser = require('body-parser');
 
 const app = express();
 
 app.use(morgan('common'));
+
+app.use(bodyParser.json());
+
+app.use(express.static('public'));
 
 const http = require('http'),
   url = require('url');
 
 let topMovies = [
   {
-    title: 'Kingdom of Heaven',
-    director: 'Ridley Scot'
+    title: "Kingdom of Heaven",
+    genre: "Action",
+    director: "Ridley Scot"
   },
   {
-    title: 'The Last Samurai',
-    director: 'Edward Zwick'
+    title: "The Last Samurai",
+    genre: "Action",
+    director: "Edward Zwick"
   },
   {
-    title: 'The Lord of the Rings: The Two Towers',
-    director: 'Peter Jackson'
+    title: "The Lord of the Rings: The Two Towers",
+    genre: "Fantasy",
+    director: "Peter Jackson"
   },
   {
-    title: 'Inception',
-    director: 'Chris Nolan'
+    title: "Inception",
+    genre: "Action",
+    director: "Chris Nolan"
   },
   {
-    title: 'Troy',
-    director: 'Wolfgang Peterson'
+    title: "Troy",
+    genre: "Action",
+    director: "Wolfgang Peterson"
   },
   {
-    title: 'Black Hawk Down',
-    director: 'Ridley Scot'
+    title: "Black Hawk Down",
+    genre: "Action",
+    director: "Ridley Scot"
   },
   {
-    title: 'Master and Commander',
-    director: 'Peter Weir'
+    title: "Master and Commander",
+    genre: "Action",
+    director: "Peter Weir"
   },
   {
-    title: 'Serenity',
-    director: 'Joss Whedon'
+    title: "Serenity",
+    genre: "Sci-Fi",
+    director: "Joss Whedon"
   },
   {
-    title: 'Interstellar',
-    director: 'Chris Nolan'
+    title: "Interstellar",
+    genre: "Sci-Fi",
+    director: "Chris Nolan"
   },
   {
-    title: 'Tombstone',
-    director: 'George P. Cosmatos'
+    title: "Tombstone",
+    genre: "Action",
+    director: "George P. Cosmatos"
   },
 ];
 
 app.get('/', (req, res) => res.send('Welcome to MyFlix, enjoy your stay.'));
 
-app.get('/movies', (req, res) => res.json(topMovies));
+//return a list of all movies to user
+app.get('/movies', (req, res) => {
+  res.send('Successful GET request returning all movies.');
+});
 
-app.use('/documentation', express.static('public'));
+//Return data about a single movie by title to the user
+app.get('/movies/:title', (req, res) => {
+  res.send('Successful GET request returning data on requested movie title: ' + req.params.title);
+});
+
+//Return data about a genre by name/title
+app.get('/movies/genres/:genre', (req, res) => {
+  res.send('Successful GET request returning data on requested movie genre: ' + req.params.genre)
+});
+
+//Return data about a director (bio, birth year, death year) by name
+app.get('/movies/directors/:director', (req, res) => {
+  res.send('Successful GET request returning data on requested movie director: ' + req.params.director)
+  });
+
+//Allow new users to register
+app.post('/users', (req, res) => {
+  res.send('Successful POST request registering new user.');
+});
+
+//Allow users to update their user info (username)
+app.put('/users/:username', (req, res) => {
+  res.send('Successful PUT request updating information for user: ' + req.params.username)
+});
+
+//Allow users to add a movie to their list of favorites
+app.post('/users/:username/movies/:title', (req, res) => {
+  res.send('Successful POST request adding movie: ' + req.params.title + ' to user ' + req.params.username + ' list of favorites.')
+  });
+
+//Allow users to remove a movie from their list of favorites
+app.delete('/users/:username/movies/:title', (req, res) => {
+  res.send('Successful DELETE request removing movie: ' + req.params.title + ' from user ' + req.params.username + ' list of favorites.')
+  });
+
+//Allow existing users to deregister
+app.delete('/users/:username', (req,res) => {
+  res.send('Successful DELETE request removing user: ' + req.params.username)
+});
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

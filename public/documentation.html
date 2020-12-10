@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <style>table, th, td {border: 1px dotted black;}</style>
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <title>Documentation</title>
@@ -9,7 +10,100 @@
 
 <body>
   <h1>Purpose</h1>
-    <p>This web application will provide users with access to information about different movies, directors, and genres. Users
+    <h4>This web application will provide users with access to information about different movies, directors, and genres.<br> Users
     will be able to sign up, update their personal information, and create a list of their favorite
-    movies.</p>
+    movies.</h4>
+    
+    <table style="width:auto">
+      <tr style="text-align:left">
+        <th>Business Logic</th>
+        <th>URL Endpoint</th>
+        <th>HTTP Method</th>
+        <td>Request Body</td>
+        <td>Request Example</td>
+        <td>Response Body</td>
+        <td>Response Example</td>
+      </tr>
+      <tr>
+        <td>Return a list of ALL movies to the user</td>
+        <td>/movies</td> 
+        <td>GET</td>
+        <td>None</td>
+        <td>/movies</td>
+        <td>JSON</td>
+        <td>{<br>"Title": "The Neverending Story" <br> "Director": "Steven Speilberg" <br> "Genre": "Fantasy"<br> }<br>{<br>"Title": "Hook" <br> "Director": "Wolfgang Peterson" <br> "Genre": "Fantasy"<br>}</td>
+      </tr>
+      <tr>
+        <td>Return data about a single movie by title to the user</td>
+        <td>/movies/[title]</td> 
+        <td>GET</td>
+        <td>None</td>
+        <td>/movies/Hook</td>
+        <td>JSON</td>
+        <td>{<br>"Title": "Hook" <br> "Director": "Wolfgang Peterson" <br> "Genre": "Fantasy"<br>}</td>
+      </tr>
+      <tr>
+        <td>Return data about a genre by name/title</td>
+        <td>/movies/genres/[genre]</td>  
+        <td>GET</td>
+        <td>None</td>
+        <td>movies/genres/Science%20Fantasy</td>
+        <td>JSON</td>
+        <td>"Science fantasy is a mixed genre within the umbrella of speculative fiction which simultaneously draws upon or combines tropes and elements from both science fiction and fantasy.""</td>
+      </tr>
+      <tr>
+        <td>Return data about a director (bio, birth year, death year) by name</td>
+        <td>/movies/directors/[director]</td> 
+        <td>GET</td>
+        <td>None</td>
+        <td>movies/directors/Jon%20Favreau</td>
+        <td>JSON</td>
+        <td>"name": "Jon Favreau" <br> "born": "October 19, 1966"<br> "bio": "Initially an indie film favorite, actor Jon Favreau has progressed to strong mainstream visibility into the millennium and, after nearly two decades in the business, is still enjoying character stardom as well as earning notice as a writer/producer/director."</td>
+      </tr>
+      <tr>
+        <td>Allow new users to register</td>
+        <td>/users</td> 
+        <td>POST</td>
+        <td>JSON</td>
+        <td>"Username": "StarLord"<br> "Password": "Gamorra1$myGirl"<br>"email": "hookedOnAFeeling@guardians.org"</td>
+        <td>JSON</td>
+        <td>"Username": "StarLord"<br> "Password": "Gamorra1$myGirl"<br>"email": "hookedOnAFeeling@guardians.org"</td>
+      </tr>
+      <tr>
+        <td>Allow users to update their user info (username)</td>
+        <td>/users/[username]</td> 
+        <td>PUT</td>
+        <td>JSON</td>
+        <td>"Username": "Groot"<br> "Password": "IAmGroot"<br>"email": "IAmGroot@guardians.org"</td>
+        <td>JSON</td>
+        <td>"Username": "Groot"<br> "Password": "IAmGroot"<br>"email": "IAmGroot@guardians.org"</td>
+      </tr>
+      <tr>
+        <td>Allow users to add a movie to their list of favorites</td>
+        <td>/users/[username]/movies/[title]</td> 
+        <td>POST</td>
+        <td>JSON</td>
+        <td>{"Movies": "Interstellar"}</td>
+        <td>JSON</td>
+        <td>{"Moves": ["Interstellar"]}</td>
+      </tr>
+      <tr>
+        <td>Allow users to remove a movie from their list of favorites</td>
+        <td>/users/[username]/movies/[title]</td> 
+        <td>DELETE</td>
+        <td>None</td>
+        <td>users/IndianaJones/movies/The%20Kingdom%20Of%20The%20Crystal%20Skull</td>
+        <td>Message</td>
+        <td>"Indiana Jones has successfully removed The Kingdom of the Crystal Skull from the list of favorites."</td>
+      </tr>
+      <tr>
+        <td>Allow existing users to deregister</td>
+        <td>/user/[username]</td> 
+        <td>DELETE</td>
+        <td>None</td>
+        <td>/users/NapoleonBonaparte</td>
+        <td>Message</td>
+        <td>"NapoleonBonaparte has successfully deregistered from myFlix"</td>
+      </tr>
+    </table>
 </body>
