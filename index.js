@@ -69,8 +69,11 @@ let topMovies = [
 app.get('/', (req, res) => res.send('Welcome to MyFlix, enjoy your stay.'));
 
 //return a list of all movies to user
-app.get('/movies', (req, res) => {
-  res.send('Successful GET request returning all movies.');
+app.get('/movies', (req, res) => res.json(topMovies));
+
+app.get('/movies/:title', (req, res) => {
+  res.json(topMovies.find((movie) =>
+    { return movie.title === req.params.title }));
 });
 
 //Return data about a single movie by title to the user
