@@ -1,0 +1,109 @@
+========Create Tables==========
+
+CREATE TABLE Genres (
+  GenreID serial PRIMARY KEY,
+  Name varchar(50) NOT NULL,
+  Description varchar(1000)
+);
+CREATE TABLE Directors (
+  DirectorID serial PRIMARY KEY,
+  Name varchar(50) NOT NULL,
+  Bio varchar(1000),
+  Birthyear date,
+  Deathyear date
+);
+CREATE TABLE Movies (
+  MovieId serial PRIMARY KEY,
+  Title varchar(50) NOT NULL,
+  Description varchar(1000),
+  DirectorID integer NOT NULL,
+  GenreID integer NOT NULL,
+  ImageURL varchar(300),
+  Featured boolean,
+  CONSTRAINT GenreKey FOREIGN KEY (GenreID)
+    REFERENCES Genres (GenreID),
+  CONSTRAINT DirectorKey FOREIGN KEY (DirectorID)
+    REFERENCES Directors (DirectorID)
+);
+CREATE TABLE Users (
+  UserID serial PRIMARY KEY,
+  Username varchar(50) NOT NULL,
+  Password varchar(50) NOT NULL,
+  Email varchar(50) NOT NULL,
+  Birth_date date
+);
+CREATE TABLE User_Movies (
+  UserMovieID serial PRIMARY KEY,
+  UserID integer,
+  MovieID integer,
+  CONSTRAINT UserKey FOREIGN KEY (UserID)
+    REFERENCES Users(UserID),
+  CONSTRAINT MovieKey FOREIGN KEY (MovieID)
+    REFERENCES Movies(MovieID)
+);
+
+===========Insert Movies==============
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('Lord of the Rings: The Two Towers','While Frodo and Sam edge closer to Mordor with the help of the shifty Gollum, the divided fellowship makes a stand against Sauron''s new ally, Saruman, and his hordes of Isengard.',5,3,'thetwotowers.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('The Hobbit: An Unexpected Journey','A reluctant Hobbit, Bilbo Baggins, sets out to the Lonely Mountain with a spirited group of dwarves to reclaim their mountain home, and the gold within it from the dragon Smaug.',5,3,'.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('Star Trek','The brash James T. Kirk tries to live up to his father''s legacy with Mr. Spock keeping him in check as a vengeful Romulan from the future creates black holes to destroy the Federation one planet at a time.',3,4,'startrek.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('The Incredibles','A family of undercover superheroes, while trying to live the quiet suburban life, are forced into action to save the world.',6,7,'incredibles.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('Chef','A head chef quits his restaurant job and buys a food truck in an effort to reclaim his creative promise, while piecing back together his estranged family.',2,5,'chefmovie.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('Kingdom of Heaven','Balian of Ibelin travels to Jerusalem during the Crusades of the 12th century, and there he finds himself as the defender of the city and its people.',3,6,'kingdomofheaven.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('Up','78-year-old Carl Fredricksen travels to Paradise Falls in his house equipped with balloons, inadvertently taking a young stowaway.',6,7,'upmovie.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('Man on Fire','In Mexico City, a former CIA operative swears vengeance on those who committed an unspeakable act against the family he was hired to protect.',3,6,'manonfire.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('The Force Awakens','As a new threat to the galaxy rises, Rey, a desert scavenger, and Finn, an ex-stormtrooper, must join Han Solo and Chewbacca to search for the one hope of restoring peace.',4,4,'forceawakens.png',True);
+INSERT INTO Movies(Title, Description, GenreID, DirectorID,ImageUrl,Featured) VALUES('Alien','After a space merchant vessel receives an unknown transmission as a distress call, one of the crew is attacked by a mysterious life form and they soon realize that its life cycle has merely begun.',4,6,'alien.png',True);
+
+
+===========Insert Directors=================
+
+INSERT INTO Directors(Name, Bio, Birthyear) VALUES('Peter Jackson', 'Peter Jackson is a New Zealand producer, writer, and director, often making cameo appearances in his films.', '1961-10-31');
+INSERT INTO Directors(Name, Bio, Birthyear) VALUES('JJ Abrams', 'JJ Abrams is an American producer, writer, and director.', '1966-06-27');
+INSERT INTO Directors(Name, Bio, Birthyear) VALUES('Jon Favreau', 'Jon Favreau is an American producer, writer, and director, often making major appearances in his own films. ', '1966-10-19');
+INSERT INTO Directors(Name, Bio, Birthyear) VALUES('Ridley Scott', 'Ridley Scott is an English producer, director, and production designer.', '1937-11-30');
+INSERT INTO Directors(Name, Bio, Birthyear) VALUES('Brad Bird', 'Brad Bird is an English producer, director, and writer.', '1957-09-24');
+
+===========Insert Genres=================
+
+INSERT INTO Genres(Name, Description) VALUES('Action', 'Action is a genre of film in which the protagonist or protagonists are thrust into a series of events that typically include violence, extended fighting, physical feats, rescues and frantic chases.');
+INSERT INTO Genres(Name, Description) VALUES('Science Fiction', 'Science fiction is a genre based on imagined future scientific or technological advances and major social or environmental changes, frequently portraying space or time travel and life on other planets.');
+INSERT INTO Genres(Name, Description) VALUES('Fantasy', 'Fantasy is a genre of speculative fiction set in a fictional universe, often inspired by real world myth and folklore. Its roots are in oral traditions, which then became fantasy literature and drama.');
+INSERT INTO Genres(Name, Description) VALUES('Animation', 'Animation is a method in which figures are manipulated to appear as moving images.');
+
+===========Insert Users=================
+
+INSERT INTO Users(Username, Password, Email, Birth_date) VALUES('Stormblessed','windrunner1','kaladin@cobaltguard.net','2010-08-31');
+INSERT INTO Users(Username, Password, Email, Birth_date) VALUES('SwordNimi','Nightblood','destroyerofevil@shards.org','2009-06-09');
+INSERT INTO Users(Username, Password, Email, Birth_date) VALUES('Vin','11thmetal','mistborn@alamancy.com','2006-07-17');
+INSERT INTO Users(Username, Password, Email, Birth_date) VALUES('silencedogood','printeverything','bfranklin@franklinpress.com','1706-01-17');
+
+===========Insert User-Movie Pairs=================
+
+INSERT INTO User_movies(Userid, Movieid) VALUES('1','2');
+INSERT INTO User_movies(Userid, Movieid) VALUES('1','3');
+INSERT INTO User_movies(Userid, Movieid) VALUES('2','7');
+INSERT INTO User_movies(Userid, Movieid) VALUES('2','9');
+INSERT INTO User_movies(Userid, Movieid) VALUES('3','6');
+INSERT INTO User_movies(Userid, Movieid) VALUES('3','8');
+INSERT INTO User_movies(Userid, Movieid) VALUES('4','6');
+INSERT INTO User_movies(Userid, Movieid) VALUES('4','4');
+
+
+===Create a script to read (SELECT) a single genre from the genre table, by name.=====
+SELECT *
+	FROM genres
+	WHERE name = 'Animation';
+
+===Create a script to read (SELECT) all movies that are of the same genre.=========
+
+SELECT *
+  FROM movies
+  WHERE genreid = 6;
+
+=====Create Script to update user email address.==============
+
+UPDATE users
+  SET Email = 'sdogood@franklinpress.com'
+  WHERE Username = 'silencedogood';
+
+=====Delete Movie from database=======
