@@ -6,8 +6,8 @@ const express = require('express'),
 const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
-const Genres = Models.Genre;
-const Directors = Models.Director;
+//const Genres = Models.Genre;
+//const Directors = Models.Director;
 
 mongoose.connect('mongodb://localhost:27017/myFlix', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -24,10 +24,10 @@ const http = require('http'),
 
 
 /*
-Return a list of ALL movies to the user
-Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
-Return data about a genre (description) by name/title (e.g., “Thriller”)
-Return data about a director (bio, birth year, death year) by name
+x Return a list of ALL movies to the user
+x Return data (description, genre, director, image URL, whether it’s featured or not) about a single movie by title to the user
+x Return data about a genre (description) by name/title (e.g., “Thriller”)
+x Return data about a director (bio, birth year, death year) by name
 Allow new users to register
 Allow users to update their user info (username, password, email, date of birth)
 Allow users to add a movie to their list of favorites
@@ -37,7 +37,6 @@ Allow existing users to deregister
 
 //open documentation file
 app.get('/', (req, res) => res.use(documentation.html));
-
 
 //return list of all users
 app.get('/users', (req, res) => {
@@ -76,8 +75,8 @@ app.get('/movies', (req, res) => {
 });
 
 //Return data about a single movie by title to the user
-app.get('/movies/:title', (req, res) => {
-  Movies.findOne({ Title: req.body.params.Title })
+app.get('/movies/:Title', (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
     .then((movie) => {
       res.json(movie);
     })
@@ -100,41 +99,35 @@ app.get('/users/:Username', (req,res) => {
 });
 
 //Return data about a genre by name/title
-
-//Need to add referenced document for directors and genres
-//==============================================================================
-app.get('/movies/:Genre', (req, res) => {
-  Genres.findOne({ Genre: req.params.Genre })
-    .then((genre) => {
-      res.json(genre);
+app.get('/movies/Genres/:Title', (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      res.json("Genre: " + movie.Genre.Name + ". Description: " + movie.Genre.Description);
     })
     .catch((err) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
 });
-//==============================================================================
 
 //Return data about a director (bio, birth year, death year) by name
-app.get('/movies/:Director', (req, res) => {
-  Directors.findOne({ Director: req.params.Director })
-    .then((director) => {
-      res.json(director);
+app.get('/movies/Directors/:Name', (req, res) => {
+  Movies.findOne({ "Director.Name": req.params.Name })
+    .then((movie) => {
+      res.json("Name: " + movie.Director.Name + " Bio: " + movie.Director.Bio + " Birth: " + movie.Director.Birth + " Death: " + movie.Director.Death);
     })
     .catch((err) => {
       console.error(err);
       res.status(500).send('Error: ' + err);
     });
 });
-
-//==============================================================================
 
 //Allow new users to register
 app.post('/users', (req, res) => {
   Users.findOne({ Username: req.body.Username })
   .then((user) => {
     if (user) {
-      return res.status(400).send(req.body.Username + 'already exists');
+      return res.status(400).send(req.body.Username + ' already exists');
     } else {
       Users
         .create({
@@ -144,9 +137,9 @@ app.post('/users', (req, res) => {
           Birthday: req.body.Birthday
         })
         .then((user) =>{res.status(201).json(user) })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
       })
     }
   })

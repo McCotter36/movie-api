@@ -44,19 +44,19 @@
       </tr>
       <tr>
         <td>Return data about a genre by name/title</td>
-        <td>/movies/genres/[genre]</td>  
+        <td>/movies/Genres/[Title]</td>  
         <td>GET</td>
         <td>None</td>
-        <td>movies/genres/Science%20Fantasy</td>
+        <td>movies/Genres/Doctor%20Strange</td>
         <td>JSON</td>
-        <td>"Science fantasy is a mixed genre within the umbrella of speculative fiction which simultaneously draws upon or combines tropes and elements from both science fiction and fantasy.""</td>
+        <td>"Genre: Science Fantasy. Description: Science fantasy is a mixed genre within the umbrella of speculative fiction which simultaneously draws upon or combines tropes and elements from both science fiction and fantasy.""</td>
       </tr>
       <tr>
         <td>Return data about a director (bio, birth year, death year) by name</td>
-        <td>/movies/directors/[director]</td> 
+        <td>/movies/Directors/[Name]</td> 
         <td>GET</td>
         <td>None</td>
-        <td>movies/directors/Jon%20Favreau</td>
+        <td>movies/Directors/Jon%20Favreau</td>
         <td>JSON</td>
         <td>"name": "Jon Favreau" <br> "born": "October 19, 1966"<br> "bio": "Initially an indie film favorite, actor Jon Favreau has progressed to strong mainstream visibility into the millennium and, after nearly two decades in the business, is still enjoying character stardom as well as earning notice as a writer/producer/director."</td>
       </tr>
@@ -65,27 +65,38 @@
         <td>/users</td> 
         <td>POST</td>
         <td>JSON</td>
-        <td>"Username": "StarLord"<br> "Password": "Gamorra1$myGirl"<br>"email": "hookedOnAFeeling@guardians.org"</td>
+        <td>"Username": "StarLord"<br> "Password": "Gamorra1$myGirl"<br>"Email": "hookedOnAFeeling@guardians.org"</td>
         <td>JSON</td>
-        <td>"Username": "StarLord"<br> "Password": "Gamorra1$myGirl"<br>"email": "hookedOnAFeeling@guardians.org"</td>
+        <td>"Username": "StarLord"<br> "Password": "Gamorra1$myGirl"<br>"Email": "hookedOnAFeeling@guardians.org"</td>
       </tr>
       <tr>
         <td>Allow users to update their user info (username)</td>
         <td>/users/[username]</td> 
         <td>PUT</td>
         <td>JSON</td>
-        <td>"Username": "Groot"<br> "Password": "IAmGroot"<br>"email": "IAmGroot@guardians.org"</td>
+        <td>"Username": "Groot"<br> "Password": "IAmGroot"<br>"Email": "IAmGroot@guardians.org"</td>
         <td>JSON</td>
-        <td>"Username": "Groot"<br> "Password": "IAmGroot"<br>"email": "IAmGroot@guardians.org"</td>
+        <td>"Username": "Groot"<br> "Password": "IAmGroot"<br>"Email": "IAmGroot@guardians.org"</td>
       </tr>
       <tr>
         <td>Allow users to add a movie to their list of favorites</td>
         <td>/users/[username]/movies/[title]</td> 
         <td>POST</td>
         <td>JSON</td>
-        <td>{"Movies": "Interstellar"}</td>
+        <td>/users/Stormblessed/movies/5fd406d5d48a05141b2e6ad8</td>
         <td>JSON</td>
-        <td>{"Moves": ["Interstellar"]}</td>
+        <td>{<br>
+    "FavoriteMovies": [<br>
+        "5fd40708d48a05141b2e6adb",<br>
+        "5fd4072fd48a05141b2e6add",<br>
+        "5fd406d5d48a05141b2e6ad8"<br>
+    ],<br>
+    "_id": "5fd408ced48a05141b2e6ae0",<br>
+    "Username": "Stormblessed",<br>
+    "Password": "windrunner1",<br>
+    "Email": "kaladin@cobaltguard.net",<br>
+    "Birthday": "2010-08-31T00:00:00.000Z"<br>
+}</td>
       </tr>
       <tr>
         <td>Allow users to remove a movie from their list of favorites</td>
