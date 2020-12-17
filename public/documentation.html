@@ -65,9 +65,19 @@
         <td>/users</td> 
         <td>POST</td>
         <td>JSON</td>
-        <td>{<br>"Username": "StarLord"<br>"Password": "Gamorra1$myGirl"<br>  "Email": "hookedOnAFeeling@guardians.org"<br> "Birthday": "2005-06-12"<br>}</td>
+        <td>{<br>"Username": "StarLord",<br>
+          "Password": "Gamorra1$myGirl",<br>
+          "Email": "hookedOnAFeeling@guardians.org",<br>
+          "Birthday": "2005-06-12",<br>
+          }</td>
         <td>JSON</td>
-        <td>{<br>"FavoriteMovies": []<br> "_id": "5fdba6b43623de80e71fe642"<br>"Username:" "StarLord"<br> "Password": "Gamorra1$myGirl"<br>"Email": "hookedOnAFeeling@guardians.org"<br>  "Birthday": "2005-06-12T00:00:00.000Z",<br>}</td>
+        <td>{<br>"FavoriteMovies": [],<br>
+          "_id": "5fdba6b43623de80e71fe642",<br>
+          "Username:" "StarLord",<br> 
+          "Password": "Gamorra1$myGirl",<br>
+          "Email": "hookedOnAFeeling@guardians.org",<br>  
+          "Birthday": "2005-06-12T00:00:00.000Z",<br>
+          }</td>
       </tr>
       <tr>
         <td>Allow users to update their user info (username)</td>
@@ -77,17 +87,17 @@
         <td>{<br>"Password": "WeAreGroot"<br>}</td>
         <td>JSON</td>
         <td>{<br>
-          "FavoriteMovies": []<br> 
-          "_id": "5fdba6b43623de80e71fe435"<br>
-          "Username": "Groot"<br> 
-          "Password": "WeAreGroot"<br>
-          "Email": "IAmGroot@guardians.org"<br>
+          "FavoriteMovies": [],<br> 
+          "_id": "5fdba6b43623de80e71fe435",<br>
+          "Username": "Groot",<br> 
+          "Password": "WeAreGroot",<br>
+          "Email": "IAmGroot@guardians.org",<br>
           "Birthday": 2004-03-12T00:00:000Z<br>
           }</td>
       </tr>
       <tr>
         <td>Allow users to add a movie to their list of favorites</td>
-        <td>/users/[username]/movies/[title]</td> 
+        <td>/users/[username]/movies/[MovieID]</td> 
         <td>POST</td>
         <td>JSON</td>
         <td>/users/Stormblessed/movies/5fd406d5d48a05141b2e6ad8</td>
@@ -107,7 +117,7 @@
       </tr>
       <tr>
         <td>Allow users to remove a movie from their list of favorites</td>
-        <td>/users/[username]/movies/[title]</td> 
+        <td>/users/[username]/movies/[movieID]</td> 
         <td>DELETE</td>
         <td>None</td>
         <td>users/IndianaJones/movies/5fd40708d48a05141b2e6adb</td>
