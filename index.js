@@ -22,6 +22,10 @@ app.use(express.static('public'));
 const http = require('http'),
   url = require('url');
 
+let auth = require('./auth')(app);
+
+const passport = require('passport');
+require('./passport');
 
 /*
 x Return a list of ALL movies to the user
@@ -63,7 +67,7 @@ app.get('/users/:Username', (req,res) => {
 });
 
 //return a list of all movies to user
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movies) => {
       res.status(201).json(movies);
@@ -187,7 +191,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 });
 
 //Allow users to remove a movie from their list of favorites
-app.post('/users/:Username/movies/:MovieID', (req, res) => {
+app.delete('/users/:Username/movies/:MovieID', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, {
     $pull: { FavoriteMovies: req.params.MovieID }
   },
