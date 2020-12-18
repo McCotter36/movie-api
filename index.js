@@ -1,13 +1,33 @@
+const cors = require('cors');
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+const { check, validationResult } = require('express-validator');
+
+app.use(cors({
+  origin:(origin,callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
+
 const express = require('express'),
  morgan = require('morgan'),
  bodyParser = require('body-parser'),
  mongoose = require('mongoose');
+
+
 
 const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 //const Genres = Models.Genre;
 //const Directors = Models.Director;
+
+
 
 mongoose.connect('mongodb://localhost:27017/myFlix', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -115,7 +135,21 @@ app.get('/movies/Directors/:Name', passport.authenticate('jwt', { session: false
 });
 
 //Allow new users to register
-app.post('/users', (req, res) => {
+app.post('/users',
+  [
+    check('Username', 'Username is required.').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAplhanumeric,
+    check('Password', 'Password is required.').not().isEmpty(),
+    check('Email', 'Email does not appear to bevalid.').isEmail()
+  ], (req, res) => {
+
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+  let hashedPassword = Users.hashedPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
   .then((user) => {
     if (user) {
@@ -124,7 +158,7 @@ app.post('/users', (req, res) => {
       Users
         .create({
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday
         })
@@ -215,4 +249,7 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something\'s not right here.');
 });
 
-app.listen(8080, () => console.log('Your app is listening on port 8080.'));
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0',() => {
+  console.log('Listening on Port ' + port);
+});
