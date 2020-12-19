@@ -53,6 +53,7 @@ require('./passport');
 app.get('/', (req, res) => {
   console.log('Welcome');
   res.send('Welcome to myFlix');
+});
 
 //return list of all users
 app.get('/users', (req, res) => {
