@@ -50,7 +50,9 @@ const passport = require('passport');
 require('./passport');
 
 //open documentation file
-app.get('/', (req, res) => res.use(documentation.html));
+app.get('/', (req, res) => {
+  console.log('Welcome');
+  res.send('Welcome to myFlix');
 
 //return list of all users
 app.get('/users', (req, res) => {
