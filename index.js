@@ -3,17 +3,6 @@ let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 const { check, validationResult } = require('express-validator');
 
-app.use(cors({
-  origin:(origin,callback) => {
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-      let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
-      return callback(new Error(message ), false);
-    }
-    return callback(null, true);
-  }
-}));
-
 const express = require('express'),
  morgan = require('morgan'),
  bodyParser = require('body-parser'),
@@ -34,6 +23,17 @@ mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifie
 
 
 const app = express();
+
+app.use(cors({
+  origin:(origin,callback) => {
+    if(!origin) return callback(null, true);
+    if(allowedOrigins.indexOf(origin) === -1){
+      let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
+      return callback(new Error(message ), false);
+    }
+    return callback(null, true);
+  }
+}));
 
 app.use(morgan('common'));
 
