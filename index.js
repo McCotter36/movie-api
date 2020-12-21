@@ -1,28 +1,34 @@
-const cors = require('cors');
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-
-const { check, validationResult } = require('express-validator');
 
 const express = require('express'),
  morgan = require('morgan'),
- bodyParser = require('body-parser'),
- mongoose = require('mongoose');
+ mongoose = require('mongoose'),
+ Models = require('./models.js'),
+ bodyParser = require('body-parser');
 
 
-
-const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
-//const Genres = Models.Genre;
-//const Directors = Models.Director;
-
-
 
 // mongoose.connect('mongodb://localhost:27017/myFlix', { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect( process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
 
 const app = express();
+
+app.use(morgan('common'));
+
+app.use(express.static('public'));
+
+app.use(bodyParser.json());
+
+const passport = require('passport');
+require('./passport');
+
+const cors = require('cors');
+
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+const { check, validationResult } = require('express-validator');
 
 app.use(cors({
   origin:(origin,callback) => {
@@ -35,28 +41,30 @@ app.use(cors({
   }
 }));
 
-app.use(morgan('common'));
-
-app.use(bodyParser.json());
-
-app.use(express.static('public'));
-
-const http = require('http'),
-  url = require('url');
+// const http = require('http'),
+//   url = require('url');
 
 let auth = require('./auth')(app);
 
-const passport = require('passport');
-require('./passport');
-
-//open documentation file
 app.get('/', (req, res) => {
   console.log('Welcome');
   res.send('Welcome to myFlix');
 });
 
+//return a list of all movies to user
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+  Movies.find()
+    .then((movies) => {
+      res.status(201).json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
+});
+
 //return list of all users
-app.get('/users', (req, res) => {
+app.get('/users', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.find()
     .then((users) => {
       res.status(201).json(users);
@@ -68,22 +76,10 @@ app.get('/users', (req, res) => {
 });
 
 //Get a user by Username
-app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req,res) => {
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
-});
-
-//return a list of all movies to user
-app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
-  Movies.find()
-    .then((movies) => {
-      res.status(201).json(movies);
     })
     .catch((err) => {
       console.error(err);
@@ -104,7 +100,7 @@ app.get('/movies/:Title', passport.authenticate('jwt', { session: false }), (req
 });
 
 //return a single user by username
-app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req,res) => {
+app.get('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
   Users.findOne({ Username: req.params.Username })
     .then((user) => {
       res.json(user);
@@ -151,10 +147,12 @@ app.post('/users',
     let errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(422).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array()
+      });
     }
 
   let hashedPassword = Users.hashedPassword(req.body.Password);
+
   Users.findOne({ Username: req.body.Username })
   .then((user) => {
     if (user) {
@@ -251,7 +249,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something\'s not right here.');
+  res.status(500).send('Something went wrong.');
 });
 
 const port = process.env.PORT || 8080;
