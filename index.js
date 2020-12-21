@@ -31,7 +31,7 @@ let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 const { check, validationResult } = require('express-validator');
 
 app.use(cors({
-  origin:(origin,callback) => {
+  origin: (origin, callback) => {
     if(!origin) return callback(null, true);
     if(allowedOrigins.indexOf(origin) === -1){
       let message = 'The CORS policy for this application doesn\'t allow access from origin ' + origin;
@@ -151,7 +151,7 @@ app.post('/users',
       });
     }
 
-  let hashedPassword = Users.hashedPassword(req.body.Password);
+  let hashedPassword = Users.hashPassword(req.body.Password);
 
   Users.findOne({ Username: req.body.Username })
   .then((user) => {
@@ -163,13 +163,13 @@ app.post('/users',
           Username: req.body.Username,
           Password: hashedPassword,
           Email: req.body.Email,
-          Birthday: req.body.Birthday
+          Birthdate: req.body.Birthdate
         })
         .then((user) =>{res.status(201).json(user) })
           .catch((error) => {
             console.error(error);
             res.status(500).send('Error: ' + error);
-      })
+      });
     }
   })
   .catch((error) => {
