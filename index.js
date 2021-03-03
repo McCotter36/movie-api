@@ -25,7 +25,7 @@ require('./passport');
 
 const cors = require('cors');
 
-let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'https://mccotter-myflix.netlify.app'];
+let allowedOrigins = ['http://localhost:8080', 'http://localhost:1234', 'http://localhost:4200', 'https://mccotter-myflix.netlify.app'];
 
 const { check, validationResult } = require('express-validator');
 
