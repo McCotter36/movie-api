@@ -1,7 +1,7 @@
-# H1 Description
+# Description
 The server-side component of a "movies" web application that provides users with access to information about different movies, directors, and genres. Users can sign up, update their personal information, and create a list of their favorite movies.
 
-# H2 API Details
+## API Details
 - RESTful Architecture
 - Built with Node.js and Express
 - Uses middleware modules such as bodyParser and Morgan
@@ -16,5 +16,5 @@ JSDoc documentation can be found in the "out" directory. Additional details rega
 
 See the index.js file for the logic pertaining to each API endpoint.
 
-# H2 Base URL
+## Base URL
 https://mccotter-movie-api.herokuapp.com/
