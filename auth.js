@@ -1,3 +1,6 @@
+/** 
+ * Key used in JWT Strategy within passport.js 
+ */
 const jwtSecret = 'your_jwt_secret';
 
 const jwt = require('jsonwebtoken'),
@@ -5,6 +8,11 @@ const jwt = require('jsonwebtoken'),
 
 require('./passport');
 
+/**
+ * Function generates token, sets expiration date, and algorithm
+ * to encode values of the JWT Strategy
+ * @param user 
+ */
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.Username,
@@ -12,6 +20,11 @@ let generateJWTToken = (user) => {
     algorithm: 'HS256'
   });
 };
+
+/**
+ * API call to login endpoint whcih will authenticate the user once credentials are entered
+ * @param router 
+ */
 
 module.exports = (router) => {
   router.post('/login', (req, res) => {
